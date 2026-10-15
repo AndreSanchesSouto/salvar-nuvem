@@ -7,13 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CloudSaver extends Application {
+public class SalvarNuvem extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(CloudSaver.class.getResource("MainView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SalvarNuvem.class.getResource("MainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Salvar nuvem");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 }
