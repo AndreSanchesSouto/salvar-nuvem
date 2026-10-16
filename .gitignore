@@ -3,6 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
+*.json
+tokens/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

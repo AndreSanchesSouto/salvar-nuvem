@@ -41,8 +41,7 @@ public class DriveQuickstart {
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES =
-            Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
+    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
@@ -52,8 +51,7 @@ public class DriveQuickstart {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
-            throws IOException {
+    public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
         InputStream in = DriveQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
@@ -64,19 +62,38 @@ public class DriveQuickstart {
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
+                    .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                    .setAccessType("offline")
+                    .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
         //returns an authorized Credential object.
         return credential;
     }
 
+    public static Drive getDriveService()
+            throws IOException, GeneralSecurityException {
+
+        NetHttpTransport httpTransport =
+                GoogleNetHttpTransport.newTrustedTransport();
+
+        return new Drive.Builder(
+                httpTransport,
+                JSON_FACTORY,
+                getCredentials(httpTransport)
+        )
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+    }
+
     public static void main(String... args) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        Drive service = new Drive.Builder(
+                    HTTP_TRANSPORT,
+                    JSON_FACTORY,
+                    getCredentials(HTTP_TRANSPORT)
+                )
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 

@@ -9,6 +9,7 @@ module br.com.devsouto.salvarnuvem {
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.services.drive;
     requires jdk.httpserver;
+    requires com.google.auth.oauth2;
 
     opens br.com.devsouto.salvarnuvem to javafx.fxml;
     opens br.com.devsouto.salvarnuvem.controller to javafx.fxml;
