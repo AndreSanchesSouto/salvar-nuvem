@@ -15,7 +15,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="btnSettings" layoutX="479.0" layoutY="350.0" mnemonicParsing="false" onAction="#abrirSettings" text="Configurações">
+      <Button fx:id="btnSettings" layoutX="494.0" layoutY="350.0" mnemonicParsing="false" onAction="#abrirSettings" text="Configurações">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
