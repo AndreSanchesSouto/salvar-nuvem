@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.devsouto.salvarnuvem.controller.MainController">
+   <children>
+      <!-- ListView que renderizará dinamicamente cada linha baseada nos dados -->
+      <ListView fx:id="userDirectoryList" layoutX="14.0" layoutY="14.0" prefHeight="320.0" prefWidth="572.0" />
+
+      <!-- Botão de adição -->
+      <Button fx:id="btnAddPathSelector" layoutX="14.0" layoutY="350.0" mnemonicParsing="false" onAction="#adicionarNovoCampo" text="+">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnSettings" layoutX="479.0" layoutY="350.0" mnemonicParsing="false" onAction="#abrirSettings" text="Configurações">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
