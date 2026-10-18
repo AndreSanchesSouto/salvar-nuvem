@@ -1,6 +1,7 @@
 package br.com.devsouto.salvarnuvem.service;
 
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -40,20 +41,20 @@ public class CreateFolder {
         // TODO(developer) - See https://developers.google.com/identity for
         // guides on implementing OAuth2 for your application.
 
-        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
-                .createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
-        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
-                credentials);
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 
         // Build a new authorized API client service.
-        Drive service = new Drive.Builder(new NetHttpTransport(),
-                GsonFactory.getDefaultInstance(),
-                requestInitializer)
+        Drive service = new Drive.Builder(
+                    HTTP_TRANSPORT,
+                    GsonFactory.getDefaultInstance(),
+                    DriveQuickstart.getCredentials(HTTP_TRANSPORT)
+                )
                 .setApplicationName("Drive samples")
                 .build();
+
         // File's metadata.
         File fileMetadata = new File();
-        fileMetadata.setName("Test");
+        fileMetadata.setName("TEsteeee");
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         try {
             File file = service.files().create(fileMetadata)
