@@ -10,38 +10,15 @@ import com.google.api.services.drive.model.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-/* Class to demonstrate use of Drive's create folder API */
 public class CreateFolder {
 
-
-    /**
-     * Create new folder.
-     *
-     * @return Inserted folder id if successful, {@code null} otherwise.
-     * @throws IOException if service account credentials file not found.
-     */
-
-    public static void main(String[] args) {
-        try {
-            String name = createFolder();
-            System.out.println(name);
-        } catch (IOException | GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String createFolder() throws IOException, GeneralSecurityException {
-        // Load pre-authorized user credentials from the environment.
-        // TODO(developer) - See https://developers.google.com/identity for
-        // guides on implementing OAuth2 for your application.
-
-        final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
+    public static String createFolder(NetHttpTransport httpTransport) throws IOException, GeneralSecurityException {
 
         // Build a new authorized API client service.
         Drive service = new Drive.Builder(
-                    HTTP_TRANSPORT,
+                    httpTransport,
                     GsonFactory.getDefaultInstance(),
-                    DriveQuickstart.getCredentials(HTTP_TRANSPORT)
+                    DriveQuickstart.getCredentials(httpTransport)
                 )
                 .setApplicationName("Drive samples")
                 .build();
