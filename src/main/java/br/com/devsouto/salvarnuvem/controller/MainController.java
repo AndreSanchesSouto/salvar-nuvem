@@ -1,6 +1,7 @@
 package br.com.devsouto.salvarnuvem.controller;
 
 import br.com.devsouto.salvarnuvem.model.UserDirectory;
+import br.com.devsouto.salvarnuvem.service.MainService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,6 +35,12 @@ public class MainController {
     // Lista observável: qualquer alteração aqui atualiza a tela automaticamente
     private final ObservableList<UserDirectory> pathItems = FXCollections.observableArrayList();
 
+    private final MainService servise;
+
+    public MainController() {
+        this.servise = new MainService();
+    }
+
     @FXML
     public void initialize() {
         userDirectoryList.setItems(pathItems);
@@ -42,12 +49,17 @@ public class MainController {
         userDirectoryList.setCellFactory(param -> new ListCell<UserDirectory>() {
             private final HBox layout = new HBox(10.0);
             private final TextField txtField = new TextField();
+            private final TextField txtName = new TextField();
             private final Button btnProcurar = new Button("Procurar...");
             private final Button btnRemover = new Button("-");
 
             {
+                txtName.setPrefHeight(25.0);
+                txtName.setPrefWidth(100.0);
+                txtName.setPromptText("Nome da pasta...");
+
                 txtField.setPrefHeight(25.0);
-                txtField.setPrefWidth(350.0);
+                txtField.setPrefWidth(300.0);
                 txtField.setPromptText("Selecione uma pasta...");
                 txtField.setEditable(false);
 
@@ -65,6 +77,7 @@ public class MainController {
                         if (selectedFile != null) {
                             item.setDirectory(selectedFile);
                             txtField.setText(selectedFile.getAbsolutePath());
+                            servise.synchronize(selectedFile, txtName.getCharacters().toString());
                         }
                     }
                 });
@@ -77,7 +90,7 @@ public class MainController {
                     }
                 });
 
-                layout.getChildren().addAll(txtField, btnProcurar, btnRemover);
+                layout.getChildren().addAll(txtName, txtField, btnProcurar, btnRemover);
             }
 
             @Override
@@ -97,7 +110,8 @@ public class MainController {
         });
 
         // Adiciona um item inicial padrão ao abrir a tela, se desejar
-        pathItems.add(new UserDirectory(null));
+        if (pathItems.isEmpty())
+            pathItems.add(new UserDirectory(null));
     }
 
     @FXML

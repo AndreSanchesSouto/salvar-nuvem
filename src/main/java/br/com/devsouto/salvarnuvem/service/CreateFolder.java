@@ -1,20 +1,14 @@
 package br.com.devsouto.salvarnuvem.service;
 
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import com.google.auth.http.HttpCredentialsAdapter;
-import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 
 /* Class to demonstrate use of Drive's create folder API */
 public class CreateFolder {
@@ -41,7 +35,7 @@ public class CreateFolder {
         // TODO(developer) - See https://developers.google.com/identity for
         // guides on implementing OAuth2 for your application.
 
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
 
         // Build a new authorized API client service.
         Drive service = new Drive.Builder(
