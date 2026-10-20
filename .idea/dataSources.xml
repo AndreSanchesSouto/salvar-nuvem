@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="sample" uuid="d38fd14b-cba6-4735-8667-0408c890fd54">
+    <data-source source="LOCAL" name="salvar-nuvem" uuid="22eb4c8a-9053-400d-9053-3c4e64c8b352">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/sample.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/salvar-nuvem.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
