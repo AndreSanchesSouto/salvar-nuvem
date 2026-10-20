@@ -12,6 +12,7 @@ module br.com.devsouto.salvarnuvem {
     requires com.google.auth.oauth2;
     requires com.google.auth;
     requires org.jspecify;
+    requires java.sql;
 
     opens br.com.devsouto.salvarnuvem to javafx.fxml;
     opens br.com.devsouto.salvarnuvem.controller to javafx.fxml;
