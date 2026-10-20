@@ -31,7 +31,7 @@ public class DatabaseManager {
 
     private static void createDatabase(Statement statement) throws SQLException {
         final String sqlUserDirectory = """
-                CREATE TABLE IF NOT EXISTS UserDirectory (
+                CREATE TABLE IF NOT EXISTS Documents (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nome TEXT NOT NULL
                 );

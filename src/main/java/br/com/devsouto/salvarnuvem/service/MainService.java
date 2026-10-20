@@ -1,7 +1,6 @@
 package br.com.devsouto.salvarnuvem.service;
 
-import br.com.devsouto.salvarnuvem.model.DocumentFolder;
-import com.google.api.client.http.javanet.NetHttpTransport;
+import br.com.devsouto.salvarnuvem.domain.model.Document;
 import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
@@ -18,11 +17,12 @@ import java.util.Map;
 
 public class MainService {
 
-    final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
     private final Map<String, List<Path>> pathList;
+    private final DocumentService documentService;
 
-    public MainService() {
+    public MainService(DocumentService documentService) {
         this.pathList = new HashMap<String, List<Path>>();
+        this.documentService = documentService;
     }
 
     public void synchronize(Path selectedFile, String folderName) {
@@ -54,14 +54,17 @@ public class MainService {
     }
 
     private void sendToDrive(String folderName) {
-        final DocumentFolder userDirectory = new DocumentFolder();
+        final Document userDirectory = new Document();
         pathList.get(folderName);
 
         if (!folderName.equals("jhsdjJHSGDFHdsgf34567890jffj")) return;
 
         try {
-
-            final String folderId = CreateFolder.createFolder(HTTP_TRANSPORT);
+            final Document document = new Document();
+            document.setRemoteId(DriveService.createFolder(folderName));
+            document.setLocalPath(Path.of(""));
+            document.setName("");
+            documentService.save(document);
 
         } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);

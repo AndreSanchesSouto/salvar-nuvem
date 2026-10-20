@@ -1,7 +1,7 @@
 package br.com.devsouto.salvarnuvem.controller;
 
-import br.com.devsouto.salvarnuvem.dto.DocumentFolderDTO;
-import br.com.devsouto.salvarnuvem.model.DocumentFolder;
+import br.com.devsouto.salvarnuvem.dto.DocumentDTO;
+import br.com.devsouto.salvarnuvem.service.DocumentService;
 import br.com.devsouto.salvarnuvem.service.MainService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,18 +28,18 @@ import java.util.Objects;
 public class MainController {
 
     @FXML
-    private ListView<DocumentFolderDTO> userDirectoryList;
+    private ListView<DocumentDTO> userDirectoryList;
 
     @FXML
     private Button btnAddPathSelector;
 
     // Lista observável: qualquer alteração aqui atualiza a tela automaticamente
-    private final ObservableList<DocumentFolderDTO> pathItems = FXCollections.observableArrayList();
+    private final ObservableList<DocumentDTO> pathItems = FXCollections.observableArrayList();
 
     private final MainService servise;
 
-    public MainController() {
-        this.servise = new MainService();
+    public MainController(MainService mainService) {
+        this.servise = mainService;
     }
 
     @FXML
@@ -47,7 +47,7 @@ public class MainController {
         userDirectoryList.setItems(pathItems);
 
         // Define a fábrica de células: ensina o JavaFX como desenhar cada item da lista
-        userDirectoryList.setCellFactory(param -> new ListCell<DocumentFolderDTO>() {
+        userDirectoryList.setCellFactory(param -> new ListCell<DocumentDTO>() {
             private final HBox layout = new HBox(10.0);
             private final TextField txtField = new TextField();
             private final TextField txtName = new TextField();
@@ -69,12 +69,12 @@ public class MainController {
 
                 // Ação do botão de procurar desta linha específica
                 btnProcurar.setOnAction(event -> {
-                    DocumentFolderDTO item = getItem();
+                    DocumentDTO item = getItem();
                     if (item != null) {
                         DirectoryChooser directoryChooser = new DirectoryChooser();
                         Window owner = btnProcurar.getScene().getWindow();
                         Path selectedFile = directoryChooser.showDialog(owner).toPath();
-                        final DocumentFolderDTO folder = new DocumentFolderDTO(selectedFile);
+                        final DocumentDTO folder = new DocumentDTO(selectedFile);
                         txtField.setText(folder.localPath().toAbsolutePath().toString());
                         servise.synchronize(folder.localPath(), txtName.getCharacters().toString());
                     }
@@ -82,7 +82,7 @@ public class MainController {
 
                 // Ação do botão de remover esta linha específica
                 btnRemover.setOnAction(event -> {
-                    DocumentFolderDTO item = getItem();
+                    DocumentDTO item = getItem();
                     if (item != null) {
                         pathItems.remove(item); // Remove do dado, o ListView some com a linha sozinho
                     }
@@ -92,7 +92,7 @@ public class MainController {
             }
 
             @Override
-            protected void updateItem(DocumentFolderDTO item, boolean empty) {
+            protected void updateItem(DocumentDTO item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setGraphic(null);
@@ -109,13 +109,13 @@ public class MainController {
 
         // Adiciona um item inicial padrão ao abrir a tela, se desejar
         if (pathItems.isEmpty())
-            pathItems.add(new DocumentFolderDTO(null));
+            pathItems.add(new DocumentDTO(null));
     }
 
     @FXML
     void adicionarNovoCampo(ActionEvent event) {
         // Apenas adicionamos um novo dado na lista. O ListView cuida do resto!
-        pathItems.add(new DocumentFolderDTO(null));
+        pathItems.add(new DocumentDTO(null));
     }
 
     @FXML

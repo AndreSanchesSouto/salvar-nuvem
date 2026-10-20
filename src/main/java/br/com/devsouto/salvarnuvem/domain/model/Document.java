@@ -1,18 +1,28 @@
-package br.com.devsouto.salvarnuvem.model;
+package br.com.devsouto.salvarnuvem.domain.model;
 
-import java.io.File;
+import br.com.devsouto.salvarnuvem.domain.enums.DocumentType;
+
 import java.nio.file.Path;
-import java.util.List;
 
-public class DocumentFolder {
+public class Document {
 
     private String id;
     private String name;
     private Path parentPath;
     private Path localPath;
     private String remoteId;
+    private DocumentType type;
 
-    public DocumentFolder() {}
+    public Document() {}
+
+    public Document(String id, String name, Path parentPath, Path localPath, String remoteId, DocumentType type) {
+        this.id = id;
+        this.name = name;
+        this.parentPath = parentPath;
+        this.localPath = localPath;
+        this.remoteId = remoteId;
+        this.type = type;
+    }
 
     public String getId() {
         return id;
@@ -54,4 +64,11 @@ public class DocumentFolder {
         this.localPath = localPath;
     }
 
+    public DocumentType getType() {
+        return type;
+    }
+
+    public void setType(DocumentType type) {
+        this.type = type;
+    }
 }

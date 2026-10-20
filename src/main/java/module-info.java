@@ -18,6 +18,7 @@ module br.com.devsouto.salvarnuvem {
     opens br.com.devsouto.salvarnuvem.controller to javafx.fxml;
 
     exports br.com.devsouto.salvarnuvem;
-    exports br.com.devsouto.salvarnuvem.model;
-    opens br.com.devsouto.salvarnuvem.model to javafx.fxml;
+    exports br.com.devsouto.salvarnuvem.domain.model;
+    exports br.com.devsouto.salvarnuvem.domain.enums;
+    opens br.com.devsouto.salvarnuvem.domain.model to javafx.fxml;
 }
