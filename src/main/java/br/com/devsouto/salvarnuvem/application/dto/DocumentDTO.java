@@ -1,4 +1,4 @@
-package br.com.devsouto.salvarnuvem.dto;
+package br.com.devsouto.salvarnuvem.application.dto;
 
 import java.nio.file.Path;
 

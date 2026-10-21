@@ -1,8 +1,7 @@
 package br.com.devsouto.salvarnuvem.controller;
 
-import br.com.devsouto.salvarnuvem.dto.DocumentDTO;
-import br.com.devsouto.salvarnuvem.service.DocumentService;
-import br.com.devsouto.salvarnuvem.service.MainService;
+import br.com.devsouto.salvarnuvem.application.dto.DocumentDTO;
+import br.com.devsouto.salvarnuvem.domain.service.MainService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

@@ -1,8 +1,6 @@
-package br.com.devsouto.salvarnuvem.configuration;
+package br.com.devsouto.salvarnuvem.infraestructure.configuration;
 
 import java.sql.*;
-import java.nio.file.Path;
-import java.nio.file.Files;
 import java.io.IOException;
 
 public class DatabaseManager {
@@ -33,7 +31,11 @@ public class DatabaseManager {
         final String sqlUserDirectory = """
                 CREATE TABLE IF NOT EXISTS Documents (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nome TEXT NOT NULL
+                    name TEXT NOT NULL,
+                    parentPath TEXT NOT NULL,
+                    localPath TEXT NOT NULL,
+                    remoteId TEXT NOT NULL,
+                    type TEXT NOT NULL
                 );
                 """;
         statement.execute(sqlUserDirectory);

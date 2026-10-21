@@ -1,10 +1,10 @@
-package br.com.devsouto.salvarnuvem.service;
+package br.com.devsouto.salvarnuvem.application.job;
 
 import java.nio.file.*;
 
 public class FileWatcher {
 
-    public static void main(String[] args) throws Exception {
+    public static void run() throws Exception {
 
         final Path pasta = Path.of("dados-cotacoes", "entrada");
         Files.createDirectories(pasta);
@@ -18,7 +18,6 @@ public class FileWatcher {
                     StandardWatchEventKinds.ENTRY_DELETE);
 
             System.out.println("Monitorando: " + pasta.toAbsolutePath());
-            System.out.println("(Ctrl+C para sair)\n");
 
             while (true) {
                 final WatchKey key = watcher.take(); // bloqueia ate haver evento

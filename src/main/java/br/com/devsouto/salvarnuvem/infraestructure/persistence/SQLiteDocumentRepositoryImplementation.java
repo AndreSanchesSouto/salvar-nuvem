@@ -1,8 +1,9 @@
 package br.com.devsouto.salvarnuvem.infraestructure.persistence;
 
-import br.com.devsouto.salvarnuvem.configuration.DatabaseManager;
+import br.com.devsouto.salvarnuvem.infraestructure.configuration.DatabaseManager;
 import br.com.devsouto.salvarnuvem.domain.model.Document;
 import br.com.devsouto.salvarnuvem.domain.repository.DocumentRepository;
+import br.com.devsouto.salvarnuvem.infraestructure.persistence.entity.DocumentEntity;
 
 import java.nio.file.Path;
 import java.sql.Connection;

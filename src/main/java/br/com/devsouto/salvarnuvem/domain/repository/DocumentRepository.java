@@ -1,7 +1,7 @@
 package br.com.devsouto.salvarnuvem.domain.repository;
 
 import br.com.devsouto.salvarnuvem.domain.model.Document;
-import br.com.devsouto.salvarnuvem.infraestructure.persistence.DocumentEntity;
+import br.com.devsouto.salvarnuvem.infraestructure.persistence.entity.DocumentEntity;
 
 import java.util.Optional;
 

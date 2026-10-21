@@ -1,8 +1,8 @@
-package br.com.devsouto.salvarnuvem.service;
+package br.com.devsouto.salvarnuvem.domain.service;
 
 import br.com.devsouto.salvarnuvem.domain.model.Document;
 import br.com.devsouto.salvarnuvem.domain.repository.DocumentRepository;
-import br.com.devsouto.salvarnuvem.infraestructure.persistence.DocumentEntity;
+import br.com.devsouto.salvarnuvem.infraestructure.persistence.entity.DocumentEntity;
 
 public class DocumentService {
 
@@ -12,15 +12,14 @@ public class DocumentService {
         this.repository = repository;
     }
 
-    public Document save(Document document) {
+    public DocumentEntity save(Document document) {
         DocumentEntity saved = this.repository.salvar(document);
-        return new Document(
+        return new DocumentEntity(
                 saved.id(),
                 saved.name(),
                 saved.parentPath(),
                 document.getLocalPath(),
-                document.getRemoteId(),
-                document.getType()
+                document.getRemoteId()
         );
     }
 

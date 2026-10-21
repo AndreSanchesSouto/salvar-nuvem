@@ -1,11 +1,11 @@
 package br.com.devsouto.salvarnuvem;
 
-import br.com.devsouto.salvarnuvem.configuration.DatabaseManager;
+import br.com.devsouto.salvarnuvem.infraestructure.configuration.DatabaseManager;
 import br.com.devsouto.salvarnuvem.controller.MainController;
 import br.com.devsouto.salvarnuvem.domain.repository.DocumentRepository;
 import br.com.devsouto.salvarnuvem.infraestructure.persistence.SQLiteDocumentRepositoryImplementation;
-import br.com.devsouto.salvarnuvem.service.DocumentService;
-import br.com.devsouto.salvarnuvem.service.MainService;
+import br.com.devsouto.salvarnuvem.domain.service.DocumentService;
+import br.com.devsouto.salvarnuvem.domain.service.MainService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
