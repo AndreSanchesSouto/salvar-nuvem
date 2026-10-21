@@ -1,5 +1,6 @@
 package br.com.devsouto.salvarnuvem.domain.service;
 
+import br.com.devsouto.salvarnuvem.domain.enums.DocumentType;
 import br.com.devsouto.salvarnuvem.domain.model.Document;
 import br.com.devsouto.salvarnuvem.domain.model.DocumentFile;
 import br.com.devsouto.salvarnuvem.domain.model.DocumentFolder;
@@ -34,7 +35,8 @@ public class MainService {
                 .createNewDocumentInMemory(
                         fileName,
                         null,
-                        sourcePath
+                        sourcePath,
+                        DocumentType.FOLDER
                 );
         final Stack<DocumentFolder> directories = new Stack<>();
         directories.push((DocumentFolder) rootDirectory);
@@ -53,7 +55,8 @@ public class MainService {
                             .createNewDocumentInMemory(
                                     directory.getFileName().toString(),
                                     directory.getParent(),
-                                    directory
+                                    directory,
+                                    DocumentType.FOLDER
                             );
                     directories.peek().addChildren(newDirectory);
                     directories.push((DocumentFolder) newDirectory);
@@ -69,7 +72,8 @@ public class MainService {
                             .createNewDocumentInMemory(
                                     file.getFileName().toString(),
                                     file.getParent(),
-                                    file
+                                    file,
+                                    DocumentType.FILE
                             );
                     directories.peek().addChildren(newFile);
                     // Handle the file here
@@ -89,6 +93,8 @@ public class MainService {
             System.err.println("Error traversing directory: " + e.getMessage());
         }
         System.out.println(directories);
+
+        //TODO: Salvar todos os documentos, atualmente soalva somnte a raiz!!!!!!!!!!!!!!!!!!!
         directories.forEach(this.documentService::save);
         //sendToDrive(folderName);
 

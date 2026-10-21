@@ -32,7 +32,7 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS Documents (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    parentPath TEXT NOT NULL,
+                    parentPath TEXT NULL,
                     localPath TEXT NOT NULL,
                     remoteId TEXT NOT NULL,
                     type TEXT NOT NULL

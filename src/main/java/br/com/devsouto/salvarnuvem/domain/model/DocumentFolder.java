@@ -13,15 +13,15 @@ public class DocumentFolder extends Document {
 
     public DocumentFolder() {}
 
-    public DocumentFolder(String name, Path parentPath, Path localPath) {
-        super(null, name, parentPath, localPath, null);
+    public DocumentFolder(String name, Path parentPath, Path localPath, DocumentType type) {
+        super(null, name, parentPath, localPath, null, type);
     }
 
     @Override
-    public Document createNewDocumentInMemory(String name, Path parentPath, Path localPath) {
+    public Document createNewDocumentInMemory(String name, Path parentPath, Path localPath, DocumentType type) {
         // Instancia a classe concreta (DocumentFile) em vez da abstrata
         // Adiciona à lista de filhos (que aceita qualquer tipo de Document)
-        return new DocumentFolder(name, parentPath, localPath);
+        return new DocumentFolder(name, parentPath, localPath, type);
     }
 
     public void addChildren(Document children) {

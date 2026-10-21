@@ -17,23 +17,31 @@ public class SQLiteDocumentRepositoryImplementation implements DocumentRepositor
     public DocumentEntity salvar(Document document) {
         String sql = """
                 INSERT INTO Documents(
-                
+                    name,
+                    parentPath,
+                    localPath,
+                    remoteId,
+                    type
                 ) VALUES (
-                
+                    ?, ?, ?, ?, ?
                 );
                 """;
 
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)
-        ) {
-            Path localPath = Path.of("");
-            return new DocumentEntity(
-                    "",
-                    "",
-                    localPath,
-                    localPath,
-                    ""
-            );
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            String parent = document.getParentPath() != null ? document.getParentPath().toString() : null;
+            String remodeId = document.getRemoteId() != null ? "document.getParentPath().toString()" : "null";
+
+            statement.setString(1, document.getName());
+            statement.setString(2, parent);
+            statement.setString(3, document.getLocalPath().toString());
+            statement.setString(4, remodeId);
+            statement.setString(5, document.getType().toString());
+
+            statement.execute();
+
+            return new DocumentEntity(document);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
