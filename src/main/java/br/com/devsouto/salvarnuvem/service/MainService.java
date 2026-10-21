@@ -64,7 +64,7 @@ public class MainService {
             document.setRemoteId(DriveService.createFolder(folderName));
             document.setLocalPath(Path.of(""));
             document.setName("");
-            Document doc = documentService.save(document);
+            documentService.save(document);
 
         } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);
