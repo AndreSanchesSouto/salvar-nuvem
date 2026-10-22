@@ -1,6 +1,9 @@
 package br.com.devsouto.salvarnuvem.domain.service;
 
 
+import br.com.devsouto.salvarnuvem.domain.model.Document;
+import br.com.devsouto.salvarnuvem.domain.model.DocumentFile;
+import br.com.devsouto.salvarnuvem.domain.model.DocumentFolder;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -22,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +61,7 @@ public class DriveService {
      * @throws IOException If the credentials.json file cannot be found.
      */
 
-     final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
+    private final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
 
 
     public  Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
@@ -74,9 +79,8 @@ public class DriveService {
                 .setAccessType("offline")
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
         //returns an authorized Credential object.
-        return credential;
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
     private  Drive getDriveService() throws IOException {
@@ -89,44 +93,68 @@ public class DriveService {
                 .build();
     }
 
-    public  String createFolder(String folderName) throws IOException, GeneralSecurityException {
-
+    public String createFolder(DocumentFolder folder) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
-        Drive service = getDriveService();
+        final Drive service = getDriveService();
 
+        if(folder.getLocalParentPath() == null) {
+            return this.createRootFolder(service, folder);
+        } else {
+            return this.createChildFolder(service, folder);
+        }
+    }
+
+    private String createRootFolder(Drive service, DocumentFolder folder) throws IOException {
         // File's metadata.
         File fileMetadata = new File();
-        fileMetadata.setName(folderName);
+        fileMetadata.setName(folder.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         try {
             File file = service.files().create(fileMetadata)
                     .setFields("id")
                     .execute();
-            System.out.println("Folder ID: " + file.getId());
             return file.getId();
         } catch (GoogleJsonResponseException e) {
-            // TODO(developer) - handle error appropriately
             System.err.println("Unable to create folder: " + e.getDetails());
             throw e;
         }
     }
 
-    public  File uploadToFolder(String realFolderId, File filed) throws IOException {
+    private String createChildFolder(Drive service, DocumentFolder folder) throws IOException {
+        // File's metadata.
+        File fileMetadata = new File();
+        fileMetadata.setName(folder.getName());
+        fileMetadata.setParents(Collections.singletonList(folder.getRemoteParentId()));
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+
+        try {
+            File file = service.files().create(fileMetadata)
+                    .setFields("id, parents")
+                    .execute();
+            return file.getId();
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("Unable to create folder: " + e.getDetails());
+            throw e;
+        }
+    }
+
+    public String uploadToFolder(String realFolderId, DocumentFile documentFile) throws IOException {
         // Build a new authorized API client service.
         Drive service = getDriveService();
 
         // File's metadata.
         File fileMetadata = new File();
-        fileMetadata.setName("photo.jpg");
+        fileMetadata.setName(documentFile.getName());
         fileMetadata.setParents(Collections.singletonList(realFolderId));
-        java.io.File filePath = new java.io.File("/home/andrew/Projects/salvar-nuvem/src/main/resources/files/sakura_wallpaper.jpg");
-        FileContent mediaContent = new FileContent("image/jpeg", filePath);
+        java.io.File filePath = new java.io.File(documentFile.getLocalPath().toString());
+        Path documentFilePath = documentFile.getLocalPath();
+        String mimeType = Files.probeContentType(documentFilePath);
+        FileContent mediaContent = new FileContent(mimeType, filePath);
         try {
             File file = service.files().create(fileMetadata, mediaContent)
                     .setFields("id, parents")
                     .execute();
-            System.out.println("File ID: " + file.getId());
-            return file;
+            return file.getId();
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
             System.err.println("Unable to upload file: " + e.getDetails());

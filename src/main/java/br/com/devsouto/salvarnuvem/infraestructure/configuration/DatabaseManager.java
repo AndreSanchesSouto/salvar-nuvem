@@ -34,7 +34,8 @@ public class DatabaseManager {
                     name TEXT NOT NULL,
                     parentPath TEXT NULL,
                     localPath TEXT NOT NULL,
-                    remoteId TEXT NOT NULL,
+                    remoteId TEXT NULL,
+                    remoteParentId TEXT NULL,
                     type TEXT NOT NULL
                 );
                 """;

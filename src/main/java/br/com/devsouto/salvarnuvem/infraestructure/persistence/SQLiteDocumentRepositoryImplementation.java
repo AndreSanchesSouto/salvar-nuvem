@@ -5,7 +5,6 @@ import br.com.devsouto.salvarnuvem.domain.model.Document;
 import br.com.devsouto.salvarnuvem.domain.repository.DocumentRepository;
 import br.com.devsouto.salvarnuvem.infraestructure.persistence.entity.DocumentEntity;
 
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,22 +20,24 @@ public class SQLiteDocumentRepositoryImplementation implements DocumentRepositor
                     parentPath,
                     localPath,
                     remoteId,
+                    remoteParentId,
                     type
                 ) VALUES (
-                    ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?
                 );
                 """;
 
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            String parent = document.getParentPath() != null ? document.getParentPath().toString() : null;
+            String parent = document.getLocalParentPath() != null ? document.getLocalParentPath().toString() : null;
 
             statement.setString(1, document.getName());
             statement.setString(2, parent);
             statement.setString(3, document.getLocalPath().toString());
             statement.setString(4, document.getRemoteId());
-            statement.setString(5, document.getType().toString());
+            statement.setString(5, document.getRemoteParentId());
+            statement.setString(6, document.getType().toString());
 
             statement.execute();
 

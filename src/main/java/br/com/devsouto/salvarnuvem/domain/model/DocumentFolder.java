@@ -14,7 +14,7 @@ public class DocumentFolder extends Document {
     public DocumentFolder() {}
 
     public DocumentFolder(String name, Path parentPath, Path localPath, DocumentType type) {
-        super(null, name, parentPath, localPath, null, type);
+        super(null, name, parentPath, localPath, null, null, type);
     }
 
     @Override

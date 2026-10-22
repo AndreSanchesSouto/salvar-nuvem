@@ -19,7 +19,8 @@ public class DocumentService {
                 saved.name(),
                 saved.parentPath(),
                 document.getLocalPath(),
-                document.getRemoteId()
+                document.getRemoteId(),
+                document.getRemoteParentId()
         );
     }
 

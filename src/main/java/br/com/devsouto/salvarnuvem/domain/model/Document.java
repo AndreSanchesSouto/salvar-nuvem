@@ -8,19 +8,21 @@ public abstract class Document {
 
     private String id;
     private String name;
-    private Path parentPath;
+    private Path localParentPath;
     private Path localPath;
     private String remoteId;
+    private String remoteParentId;
     private DocumentType type;
 
     public Document() {}
 
-    public Document(String id, String name, Path parentPath, Path localPath, String remoteId, DocumentType type) {
+    public Document(String id, String name, Path localParentPath, Path localPath, String remoteId, String remoteParentId, DocumentType type) {
         this.id = id;
         this.name = name;
-        this.parentPath = parentPath;
+        this.localParentPath = localParentPath;
         this.localPath = localPath;
         this.remoteId = remoteId;
+        this.remoteParentId = remoteParentId;
         this.type = type;
     }
 
@@ -42,12 +44,12 @@ public abstract class Document {
         this.name = name;
     }
 
-    public Path getParentPath() {
-        return parentPath;
+    public Path getLocalParentPath() {
+        return localParentPath;
     }
 
-    public void setParentPath(Path parentPath) {
-        this.parentPath = parentPath;
+    public void setLocalParentPath(Path localParentPath) {
+        this.localParentPath = localParentPath;
     }
 
     public String getRemoteId() {
@@ -66,6 +68,14 @@ public abstract class Document {
         this.localPath = localPath;
     }
 
+    public String getRemoteParentId() {
+        return remoteParentId;
+    }
+
+    public void setRemoteParentId(String remoteParentId) {
+        this.remoteParentId = remoteParentId;
+    }
+
     public DocumentType getType() {
         return type;
     }
@@ -79,7 +89,7 @@ public abstract class Document {
         return "Document {" +
                 "\nid='" + id + '\'' +
                 "\nname='" + name + '\'' +
-                "\nparentPath=" + parentPath +
+                "\nparentPath=" + localParentPath +
                 "\nlocalPath=" + localPath +
                 "\nremoteId='" + remoteId + '\'' +
                 '}';

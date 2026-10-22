@@ -8,13 +8,13 @@ public class DocumentFile extends Document {
 
     public DocumentFile() {}
 
-    public DocumentFile(String id, String name, Path parentPath, Path localPath, String remoteId, DocumentType type) {
-        super(id, name, parentPath, localPath, remoteId, type);
+    public DocumentFile(String id, String name, Path parentPath, Path localPath, String remoteId, String remoteParentId, DocumentType type) {
+        super(id, name, parentPath, localPath, remoteId, remoteParentId, type);
     }
 
     @Override
     public Document createNewDocumentInMemory(String name, Path parentPath, Path path, DocumentType type) {
-        return new DocumentFile(null, name, parentPath, path, null, type);
+        return new DocumentFile(null, name, parentPath, path, null, null, type);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class DocumentFile extends Document {
         return "DocumentFile{" +
                     "\nnome: " + this.getName() +
                     "\npath: " + this.getLocalPath() +
-                    "\nparent: " + this.getParentPath() +
+                    "\nparent: " + this.getLocalParentPath() +
                 "\n}";
     }
 }

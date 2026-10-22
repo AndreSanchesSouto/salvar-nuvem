@@ -94,41 +94,43 @@ public class MainService {
         } catch (IOException e) {
             System.err.println("Error traversing directory: " + e.getMessage());
         }
-        System.out.println(directories);
 
-
-        final String rootDirectoryId;
-        try {
-            rootDirectoryId = this.driveService.createFolder(rootDirectory.getName());
-        } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        rootDirectory.setRemoteId(rootDirectoryId);
-        this.documentService.save(rootDirectory);
 
         directories.forEach(this::saveDocuments);
     }
 
     private void saveDocuments(Document document) {
-        if (document instanceof DocumentFolder folder) {
-            folder.getChildren().forEach(this::saveDocuments);
-        }
-    }
-
-    private void sendToDrive(String folderName) {
-        final Document userDirectory = new DocumentFile();
-        if (!folderName.equals("jhsdjJHSGDFHdsgf34567890jffj")) return;
-
+        final Stack<String> stackIds = new Stack<>();
         try {
-            final DocumentFile folder = new DocumentFile();
-            folder.setRemoteId(this.driveService.createFolder(folderName));
-            folder.setLocalPath(Path.of(""));
-            folder.setName(folderName);
-            documentService.save(folder);
+            if (document instanceof DocumentFolder folder)
+                this.sendFolderToDrive(folder, stackIds);
 
-        } catch (IOException | GeneralSecurityException e) {
+            else if (document instanceof DocumentFile file)
+                this.sendFileToDrive(file, stackIds);
+
+        } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
+        this.documentService.save(document);
+    }
+
+    private void sendFolderToDrive(DocumentFolder folder, Stack<String> stackIds) throws GeneralSecurityException, IOException {
+        final String directoryId;
+
+        if (folder.getLocalParentPath() != null)
+            folder.setRemoteParentId(stackIds.peek());
+
+        directoryId = this.driveService.createFolder(folder);
+        folder.setRemoteId(directoryId);
+        stackIds.push(directoryId);
+        folder.getChildren().forEach(this::saveDocuments);
+        stackIds.pop();
+    }
+
+    private void sendFileToDrive(DocumentFile file, Stack<String> stackIds) throws IOException {
+        final String parentId = stackIds.peek();
+        file.setRemoteParentId(parentId);
+        file.setRemoteId(this.driveService.uploadToFolder(file.getRemoteParentId(), file));
     }
 
 }
