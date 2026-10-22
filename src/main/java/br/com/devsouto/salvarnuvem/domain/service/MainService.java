@@ -18,12 +18,14 @@ import java.util.*;
 public class MainService {
 
     private final DocumentService documentService;
+    private final DriveService driveService;
 
-    public MainService(DocumentService documentService) {
+    public MainService(DocumentService documentService, DriveService driveService) {
         this.documentService = documentService;
+        this.driveService = driveService;
     }
 
-    public void synchronize(Path source, String folderName) {
+    public void synchronize(Path source, String folderName)  {
         Path sourcePath = source.toAbsolutePath().normalize();
 
         if (!Files.exists(sourcePath)) {
@@ -94,10 +96,23 @@ public class MainService {
         }
         System.out.println(directories);
 
-        //TODO: Salvar todos os documentos, atualmente soalva somnte a raiz!!!!!!!!!!!!!!!!!!!
-        directories.forEach(this.documentService::save);
-        //sendToDrive(folderName);
 
+        final String rootDirectoryId;
+        try {
+            rootDirectoryId = this.driveService.createFolder(rootDirectory.getName());
+        } catch (GeneralSecurityException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        rootDirectory.setRemoteId(rootDirectoryId);
+        this.documentService.save(rootDirectory);
+
+        directories.forEach(this::saveDocuments);
+    }
+
+    private void saveDocuments(Document document) {
+        if (document instanceof DocumentFolder folder) {
+            folder.getChildren().forEach(this::saveDocuments);
+        }
     }
 
     private void sendToDrive(String folderName) {
@@ -106,7 +121,7 @@ public class MainService {
 
         try {
             final DocumentFile folder = new DocumentFile();
-            folder.setRemoteId(DriveService.createFolder(folderName));
+            folder.setRemoteId(this.driveService.createFolder(folderName));
             folder.setLocalPath(Path.of(""));
             folder.setName(folderName);
             documentService.save(folder);

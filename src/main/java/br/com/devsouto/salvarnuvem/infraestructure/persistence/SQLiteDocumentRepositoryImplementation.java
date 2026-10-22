@@ -31,12 +31,11 @@ public class SQLiteDocumentRepositoryImplementation implements DocumentRepositor
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             String parent = document.getParentPath() != null ? document.getParentPath().toString() : null;
-            String remodeId = document.getRemoteId() != null ? "document.getParentPath().toString()" : "null";
 
             statement.setString(1, document.getName());
             statement.setString(2, parent);
             statement.setString(3, document.getLocalPath().toString());
-            statement.setString(4, remodeId);
+            statement.setString(4, document.getRemoteId());
             statement.setString(5, document.getType().toString());
 
             statement.execute();

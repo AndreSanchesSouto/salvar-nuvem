@@ -31,22 +31,22 @@ public class DriveService {
     /**
      * Application name.
      */
-    private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";
+    private  final String APPLICATION_NAME = "Google Drive API Java Quickstart";
     /**
      * Global instance of the JSON factory.
      */
-    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private  final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     /**
      * Directory to store authorization tokens for this application.
      */
-    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private  final String TOKENS_DIRECTORY_PATH = "tokens";
 
     /**
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private  final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
+    private  final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
      * Creates an authorized Credential object.
@@ -56,10 +56,10 @@ public class DriveService {
      * @throws IOException If the credentials.json file cannot be found.
      */
 
-    static final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
+     final NetHttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder().build();
 
 
-    public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    public  Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
         InputStream in = DriveService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
@@ -79,7 +79,7 @@ public class DriveService {
         return credential;
     }
 
-    private static Drive getDriveService() throws IOException {
+    private  Drive getDriveService() throws IOException {
         return new Drive.Builder(
                 HTTP_TRANSPORT,
                 GsonFactory.getDefaultInstance(),
@@ -89,7 +89,7 @@ public class DriveService {
                 .build();
     }
 
-    public static String createFolder(String folderName) throws IOException, GeneralSecurityException {
+    public  String createFolder(String folderName) throws IOException, GeneralSecurityException {
 
         // Build a new authorized API client service.
         Drive service = getDriveService();
@@ -111,7 +111,7 @@ public class DriveService {
         }
     }
 
-    public static File uploadToFolder(String realFolderId, File filed) throws IOException {
+    public  File uploadToFolder(String realFolderId, File filed) throws IOException {
         // Build a new authorized API client service.
         Drive service = getDriveService();
 
@@ -134,7 +134,7 @@ public class DriveService {
         }
     }
 
-    public static void m() throws IOException, GeneralSecurityException {
+    public  void m() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(

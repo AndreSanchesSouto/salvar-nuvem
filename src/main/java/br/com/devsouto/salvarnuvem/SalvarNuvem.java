@@ -1,5 +1,6 @@
 package br.com.devsouto.salvarnuvem;
 
+import br.com.devsouto.salvarnuvem.domain.service.DriveService;
 import br.com.devsouto.salvarnuvem.infraestructure.configuration.DatabaseManager;
 import br.com.devsouto.salvarnuvem.controller.MainController;
 import br.com.devsouto.salvarnuvem.domain.repository.DocumentRepository;
@@ -22,8 +23,9 @@ public class SalvarNuvem extends Application {
         DocumentRepository repository = new SQLiteDocumentRepositoryImplementation();
 
         DocumentService documentService = new DocumentService(repository);
+        DriveService driveService = new DriveService();
 
-        MainService mainService = new MainService(documentService);
+        MainService mainService = new MainService(documentService, driveService);
 
         this.renderPanel(stage, mainService);
     }
