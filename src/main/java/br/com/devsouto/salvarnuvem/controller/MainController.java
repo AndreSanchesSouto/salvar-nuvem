@@ -41,8 +41,18 @@ public class MainController {
         this.servise = mainService;
     }
 
+    private void loadData() {
+        pathItems.addAll(this.servise.findRootFolders()
+                .stream()
+                .map(document ->
+                        new DocumentDTO(document.getName(), document.getLocalPath())
+                ).toList());
+        System.out.println(pathItems);
+    }
+
     @FXML
     public void initialize() {
+        this.loadData();
         userDirectoryList.setItems(pathItems);
 
         // Define a fábrica de células: ensina o JavaFX como desenhar cada item da lista
@@ -73,7 +83,7 @@ public class MainController {
                         DirectoryChooser directoryChooser = new DirectoryChooser();
                         Window owner = btnProcurar.getScene().getWindow();
                         Path selectedFile = directoryChooser.showDialog(owner).toPath();
-                        final DocumentDTO folder = new DocumentDTO(selectedFile);
+                        final DocumentDTO folder = new DocumentDTO(txtName.getCharacters().toString(), selectedFile);
                         txtField.setText(folder.localPath().toAbsolutePath().toString());
                         servise.synchronize(folder.localPath(), txtName.getCharacters().toString());
                     }
@@ -108,13 +118,13 @@ public class MainController {
 
         // Adiciona um item inicial padrão ao abrir a tela, se desejar
         if (pathItems.isEmpty())
-            pathItems.add(new DocumentDTO(null));
+            pathItems.add(new DocumentDTO(null, null));
     }
 
     @FXML
     void adicionarNovoCampo(ActionEvent event) {
         // Apenas adicionamos um novo dado na lista. O ListView cuida do resto!
-        pathItems.add(new DocumentDTO(null));
+        pathItems.add(new DocumentDTO(null, null));
     }
 
     @FXML

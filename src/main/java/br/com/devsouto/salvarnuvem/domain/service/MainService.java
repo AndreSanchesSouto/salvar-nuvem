@@ -141,4 +141,10 @@ public class MainService {
         file.setRemoteId(this.driveService.uploadToFolder(file.getRemoteParentId(), file));
     }
 
+    public List<DocumentFolder> findRootFolders() {
+        return this.documentService.findRootFolders()
+                .stream()
+                .map(DocumentFolder::new)
+                .toList();
+    }
 }

@@ -20,5 +20,6 @@ module br.com.devsouto.salvarnuvem {
     exports br.com.devsouto.salvarnuvem;
     exports br.com.devsouto.salvarnuvem.domain.model;
     exports br.com.devsouto.salvarnuvem.domain.enums;
+    exports br.com.devsouto.salvarnuvem.infraestructure.persistence.entity;
     opens br.com.devsouto.salvarnuvem.domain.model to javafx.fxml;
 }

@@ -1,6 +1,7 @@
 package br.com.devsouto.salvarnuvem.domain.model;
 
 import br.com.devsouto.salvarnuvem.domain.enums.DocumentType;
+import br.com.devsouto.salvarnuvem.infraestructure.persistence.entity.DocumentEntity;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -16,6 +17,16 @@ public class DocumentFolder extends Document {
     public DocumentFolder(String name, Path parentPath, Path localPath, DocumentType type) {
         super(null, name, parentPath, localPath, null, null, type);
     }
+
+    public DocumentFolder(DocumentEntity documentEntity) {
+        super(documentEntity.id(),
+                documentEntity.name(),
+                documentEntity.parentPath(),
+                documentEntity.localPath(),
+                documentEntity.remoteId(),
+                documentEntity.remoteParentId(),documentEntity.type()
+        );
+   }
 
     @Override
     public Document createNewDocumentInMemory(String name, Path parentPath, Path localPath, DocumentType type) {
