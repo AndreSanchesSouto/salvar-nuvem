@@ -14,6 +14,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainService {
 
@@ -96,11 +98,17 @@ public class MainService {
         }
 
 
-        directories.forEach(this::saveDocuments);
+        final Stack<String> stackIds = new Stack<>();
+        Thread.startVirtualThread(() -> {
+            try (final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                executor.submit(() -> directories.forEach(document ->
+                        saveDocuments(document, stackIds))
+                );
+            }
+        });
     }
 
-    private void saveDocuments(Document document) {
-        final Stack<String> stackIds = new Stack<>();
+    private void saveDocuments(Document document, Stack<String> stackIds) {
         try {
             if (document instanceof DocumentFolder folder)
                 this.sendFolderToDrive(folder, stackIds);
@@ -123,7 +131,7 @@ public class MainService {
         directoryId = this.driveService.createFolder(folder);
         folder.setRemoteId(directoryId);
         stackIds.push(directoryId);
-        folder.getChildren().forEach(this::saveDocuments);
+        folder.getChildren().forEach((document) -> saveDocuments(document, stackIds));
         stackIds.pop();
     }
 
