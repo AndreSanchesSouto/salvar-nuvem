@@ -11,4 +11,5 @@ public interface DocumentRepository {
     Optional<DocumentEntity> findByName(String folderName);
     Optional<DocumentEntity> findById(String folderId);
     List<DocumentEntity> findRootFolders();
+    List<DocumentEntity> findFolders();
 }

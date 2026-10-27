@@ -80,21 +80,55 @@ public class SQLiteDocumentRepositoryImplementation implements DocumentRepositor
             List<DocumentEntity> documents = new ArrayList<DocumentEntity>();
 
             while (resultSet.next()) {
-                documents.add(new DocumentEntity(
-                    resultSet.getString("id"),
-                    resultSet.getString("name"),
-                    this.toPath(resultSet.getString("parentPath")),
-                    this.toPath(resultSet.getString("localPath")),
-                    resultSet.getString("remoteId"),
-                    resultSet.getString("remoteParentId"),
-                    DocumentType.valueOf(resultSet.getString("type"))
-                ));
+                documents.add(
+                        this.createDocumentEntity(resultSet)
+                );
             }
 
             return documents;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<DocumentEntity> findFolders() {
+        String sql = """
+            SELECT 
+                *
+            FROM Documents
+            WHERE
+                type = 'FOLDER'
+            """;
+
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            List<DocumentEntity> documents = new ArrayList<DocumentEntity>();
+
+            while (resultSet.next()) {
+                documents.add(
+                        this.createDocumentEntity(resultSet)
+                );
+            }
+
+            return documents;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private DocumentEntity createDocumentEntity(ResultSet resultSet) throws SQLException {
+        return new DocumentEntity(
+                resultSet.getString("id"),
+                resultSet.getString("name"),
+                this.toPath(resultSet.getString("parentPath")),
+                this.toPath(resultSet.getString("localPath")),
+                resultSet.getString("remoteId"),
+                resultSet.getString("remoteParentId"),
+                DocumentType.valueOf(resultSet.getString("type"))
+        );
     }
 
     private Path toPath(String value) {

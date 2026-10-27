@@ -31,4 +31,9 @@ public class DocumentService {
         return this.repository.findRootFolders();
     }
 
+    public List<DocumentEntity> findFolders() {
+        return this.repository.findFolders();
+    }
+
+
 }

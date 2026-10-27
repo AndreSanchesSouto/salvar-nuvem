@@ -4,29 +4,33 @@ import java.nio.file.*;
 
 public class FileWatcher {
 
-    public static void run() throws Exception {
-
-        final Path pasta = Path.of("dados-cotacoes", "entrada");
-        Files.createDirectories(pasta);
-
+    public static void run(Path folder) throws Exception {
         try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
 
             // Registra a pasta informando os eventos de interesse.
-            pasta.register(watcher,
+            folder.register(watcher,
                     StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_MODIFY,
                     StandardWatchEventKinds.ENTRY_DELETE);
 
-            System.out.println("Monitorando: " + pasta.toAbsolutePath());
+            System.out.println("Monitorando: " + folder.toAbsolutePath());
 
             while (true) {
+                System.out.println("\n\n");
                 final WatchKey key = watcher.take(); // bloqueia ate haver evento
-                System.out.println(key);
-                for (var evento : key.pollEvents()) {
-                    var tipo = evento.kind();
+
+                for (WatchEvent<?> evento : key.pollEvents()) {
+                    WatchEvent.Kind<?> tipo = evento.kind();
+
                     final Path nome = (Path) evento.context();
-                    if (!nome.getFileName().toString().endsWith("~")) {
-                        System.out.println(tipo.name() + " -> " + nome);
+                    final Path path = folder.resolve(nome);
+
+                    System.out.println("nome: " + nome.getFileName());
+                    System.out.println("caminho: " + path);
+                    System.out.println("evento: " + tipo.name());
+
+                    if (tipo == StandardWatchEventKinds.ENTRY_MODIFY) {
+                        System.out.println("Arquivo editado: " + path);
                     }
                 }
 
@@ -36,6 +40,7 @@ public class FileWatcher {
                     System.out.println("Pasta inacessivel, encerrando.");
                     break;
                 }
+
             }
         }
     }

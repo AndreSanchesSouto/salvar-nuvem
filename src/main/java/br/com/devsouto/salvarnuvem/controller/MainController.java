@@ -2,6 +2,7 @@ package br.com.devsouto.salvarnuvem.controller;
 
 import br.com.devsouto.salvarnuvem.application.dto.DocumentDTO;
 import br.com.devsouto.salvarnuvem.domain.service.MainService;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,7 +48,6 @@ public class MainController {
                 .map(document ->
                         new DocumentDTO(document.getName(), document.getLocalPath())
                 ).toList());
-        System.out.println(pathItems);
     }
 
     @FXML
